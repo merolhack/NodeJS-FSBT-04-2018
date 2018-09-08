@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const Validator = require('validatorjs');
-const User = require('../../models/user');
+const Comment = require('../../models/comment');
 
 /* GET / */
 router.get('/', async (req, res, next) => {
   try {
-    const users = await User.find().exec()
+    const comments = await Comment.find().exec()
     return res.json({
-      data: users
+      data: comments
     });
   } catch (err) {
     // TODO: Cath exception
@@ -19,9 +19,9 @@ router.get('/', async (req, res, next) => {
 router.get('/:_id', async (req, res, next) => {
   try {
     const _id = req.params._id;
-    const user = await User.findOne({ _id }).exec();
-    console.log(user);
-    return res.json(user);
+    const comment = await Comment.findOne({ _id }).exec();
+    console.log(comment);
+    return res.json(comment);
   } catch (err) {
     // TODO: Cath exception
   }
@@ -39,9 +39,9 @@ router.post('/', (req, res, next) => {
         errors: validation.errors.errors
       });
     }
-    const createdUser = new User(data);
-    createdUser.save();
-    return res.json({ message: 'User created!' });
+    const createdComment = new Comment(data);
+    createdComment.save();
+    return res.json({ message: 'Comment created!' });
   } catch (err) {
     // TODO: Cath exception
   }
@@ -60,8 +60,8 @@ router.put('/:_id', async (req, res, next) => {
         errors: validation.errors.errors
       });
     }
-    const updatedUser = await User.findOneAndUpdate({ _id }, data, { new: true }).exec()
-    return res.json(updatedUser);
+    const updatedComment = await Comment.findOneAndUpdate({ _id }, data, { new: true }).exec()
+    return res.json(updatedComment);
   } catch (err) {
     // TODO: Cath exception
   }
@@ -71,7 +71,7 @@ router.put('/:_id', async (req, res, next) => {
 router.delete('/:_id', async (req, res, next) => {
   try {
     const _id = req.params._id;
-    const deletedUser = await User.findOneAndRemove({ _id }).exec();
+    const deletedComment = await Comment.findOneAndRemove({ _id }).exec();
     return res.status(204).json();
   } catch (err) {
     // TODO: Cath exception
